@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>周易算卦</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>周易算卦</h1>
+    <div>
+      <label for="birthDate">请输入您的出生日期：</label>
+      <input type="date" id="birthDate" />
+    </div>
+    <div>
+      <label for="question">请输入您的问题：</label>
+      <textarea id="question" placeholder="请输入您的问题"></textarea>
+    </div>
+    <button onclick="calculate()">算卦</button>
+
+    <div id="result" class="result">
+      <p id="guaText">卦象的含义将在这里显示。</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
