@@ -1,12 +1,29 @@
-<!-- App.vue -->
 <template>
-  <router-view />
+  <div class="entrance-container">
+    <BgmPlayer />
+    <Box @boxOpened="showInputPanel = true" />
+    <InputPanel v-if="showInputPanel" />
+  </div>
 </template>
 
 <script setup>
-// 不需要写任何逻辑
+import { ref } from 'vue'
+import Box from './components/Box.vue'
+import InputPanel from './components/InputPanel.vue'
+import BgmPlayer from './components/BgmPlayer.vue'
+
+const showInputPanel = ref(false)
 </script>
 
-<style>
-/* 可以留空或加全局样式 */
+
+<style scoped>
+.entrance-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: radial-gradient(#eae6df, #ccc);
+  overflow: hidden;
+}
 </style>
