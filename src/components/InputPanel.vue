@@ -1,16 +1,17 @@
 <template>
   <div class="input-panel">
+
+    <br>
+
     <div>
       <label for="birthDate">请输入您的出生日期：</label>
-      <input type="date" v-model="birthDate" />
+      <input type="datetime-local" v-model="birthDate" />
     </div>
 
-    <div>
-      <label for="question">请输入您的问题：</label>
-      <textarea v-model="question" placeholder="请输入您的问题"></textarea>
-    </div>
+    <br>
+    <br>
 
-    <button @click="calculate">算卦</button>
+    <button @click="lunarCal">算卦</button>
 
     <div class="result" v-if="result">
       <p id="guaText">{{ result }}</p>
@@ -19,43 +20,54 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue'
+import { Solar } from 'lunar-javascript';
+import { ref } from 'vue'
 const birthDate = ref('')
-const question = ref('')
 const result = ref('')
 
-// 计算卦象
-function calculate() {
-
-  if (!birthDate.value || !question.value.trim()) {
-    alert('请完善出生日期和问题')
+//阴历ab算法
+function lunarCal(){
+  if(!birthDate.value){
+    alert('请输入出生日期和问题')
     return
   }
 
-  const yaos = []
+  const date = new Date(birthDate.value);
+  const solar = Solar.fromYmdHms(
+      date.getFullYear(),
+      date.getMonth() + 1,
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds()
+  );
 
-  // 模拟六次铜钱投掷，得到六个爻（从下往上）
-  for (let i = 0; i < 6; i++) {
-    let sum = 0
-    for (let j = 0; j < 3; j++) {
-      sum += Math.random() < 0.5 ? 2 : 3 // 模拟抛硬币：正面=3，反面=2
-    }
-    const yao = sum % 2 === 0 ? 0 : 1 // 偶数为阴爻，奇数为阳爻
-    yaos.push(yao)
-  }
+  const lunar = solar.getLunar();
+  const lunarYear = lunar.getYear();     // 农历年（数字）
+  const lunarMonth = lunar.getMonth();   // 农历月（数字）
+  const lunarDay = lunar.getDay();       // 农历日（数字）
+  const hour = date.getHours();          // 使用阳历的小时
 
-  // 得到下卦和上卦（三爻），顺序为从下到上
-  const lower = yaos.slice(0, 3).reverse().join('')
-  const upper = yaos.slice(3, 6).reverse().join('')
+  // 3. 计算 a 和 b
+  const a = (lunarYear + lunarMonth + lunarDay) % 8;
+  const b = (lunarYear + lunarMonth + lunarDay + hour) % 8;
 
-  // 八卦编号，转十进制
-  const lowerIndex = parseInt(lower, 2)
-  const upperIndex = parseInt(upper, 2)
+  const idx = (8 - a) % 8 + (8 - b) % 8 * 8;
 
-  // 文王卦序中的编号（64卦中，八卦组合 index）
-  const guaIndex = upperIndex * 8 + lowerIndex +1;
+  const gua = [
+     2, 23,  8, 20, 16, 35, 45, 12,
+    15, 52, 39, 53, 62, 56, 31, 33,
+     7,  4, 29, 59, 40, 64, 47,  6,
+    46, 18, 48, 57, 32, 50, 28, 44,
+    24, 27,  3, 42, 51, 21, 17, 25,
+    36, 22, 63, 37, 55, 30, 49, 13,
+    19, 41, 60, 61, 54, 38, 58, 10,
+    11, 26,  5,  9, 34, 14, 43,  1
+  ]
 
-  result.value = `卦象为：${getGuaMeaning(guaIndex)}`
+  console.log(a + ' ' + ' ' + b + ' ' + gua[idx]);
+
+
 }
 
 // 获取卦象含义
@@ -137,6 +149,7 @@ function getGuaMeaning(index) {
   position: absolute;
   top: 325px; /* 距离页面顶端的距离，根据匣子位置微调 */
   left: 50%;
+  width: 600px;
   transform: translateX(-50%);
   background: white;
   padding: 20px;
