@@ -13,13 +13,13 @@
 
 <script setup>
 import { ref } from 'vue'
-
 const boxOpened = ref(false)
 const emit = defineEmits(['boxOpened'])
 function openBox() {
   boxOpened.value = true
   emit('boxOpened')
 }
+
 </script>
 
 <style scoped>
@@ -27,13 +27,26 @@ function openBox() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
+  justify-content: flex-start; /* 保证从顶部开始排列 */
+  min-height: 100vh; /* 保证至少占满屏幕 */
+  width: 100%;
   background: radial-gradient(#eae6df, #ccc);
-  overflow: visible;
+  position: relative; /* 使 .base 相对于它定位 */
+  padding-bottom: 50px; /* 给底部留出空间 */
 }
 
+.base {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #a9845b;
+  border-radius: 0 0 4px 4px;
+  z-index: 3;
+  padding: 20px; /* 内边距，确保背景包裹内容 */
+  min-height: 50%; /* 最小高度，避免背景消失 */
+  height: auto; /* 根据内容自动调整高度 */
+  box-sizing: border-box;
+}
 .box-container {
   transition: transform 1.5s ease;
 }
@@ -64,7 +77,6 @@ function openBox() {
   transition: transform 1s ease;
 }
 
-
 .lock-opened {
   transform: translate(-50%, -200%) rotate(180deg); /* 锁随盖子旋转并移动到上方 */
 }
@@ -84,16 +96,6 @@ function openBox() {
   transform: rotateX(-120deg);
 }
 
-.base {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 50%;
-  background: #a9845b;
-  border-radius: 0 0 4px 4px;
-  z-index:3;
-}
-
 .center-block {
   position: absolute;
   top: 50%;
@@ -102,12 +104,8 @@ function openBox() {
   width: 60%;
   height: 10px;
   background: #fff;
-  z-index:0;
+  z-index: 0;
 }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
+
 </style>
