@@ -1,11 +1,11 @@
-<template>
-  <div class="entrance-container">
-    <div :class="['box-container', { 'zoom-in': boxOpened }]">
+<template style="height: 100%;">
+  <div class="entrance-container"  >
+    <div :class="['box-container', { 'zoom-in': boxOpened }]" >
       <div class="box" @click="openBox">
-  <div :class="['lid', { 'open-lid': boxOpened }]"></div>
+  <div :class="['lid', { 'open-lid': boxOpened }]" ></div>
   <div class="lock" :class="{ 'lock-opened': boxOpened }"></div> <!-- 锁 -->
-  <div class="center-block"></div>
-  <div class="base"></div>
+  <div class="center-block" ></div>
+  <div class="base" ></div>
 </div>
     </div>
   </div>
@@ -30,7 +30,6 @@ function openBox() {
   justify-content: flex-start; /* 保证从顶部开始排列 */
   min-height: 100vh; /* 保证至少占满屏幕 */
   width: 100%;
-  background: radial-gradient(#eae6df, #ccc);
   position: relative; /* 使 .base 相对于它定位 */
   padding-bottom: 50px; /* 给底部留出空间 */
 }
@@ -46,6 +45,7 @@ function openBox() {
   min-height: 50%; /* 最小高度，避免背景消失 */
   height: auto; /* 根据内容自动调整高度 */
   box-sizing: border-box;
+  margin-top:auto;
 }
 .box-container {
   transition: transform 1.5s ease;
