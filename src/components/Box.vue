@@ -52,7 +52,7 @@ function openBox() {
 }
 
 .box-container.zoom-in {
-  transform: scale(1.8) translateY(+80px) translateX(-400px);
+  transform: scale(1.8) translateY(+0px) translateX(-400px);
 }
 
 .box {
